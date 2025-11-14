@@ -93,6 +93,9 @@ const Index = () => {
   const [tradesPanelOpen, setTradesPanelOpen] = useState(false);
   const [selectedPrediction, setSelectedPrediction] = useState<PredictionNodeData | null>(null);
   const [zoomLevel, setZoomLevel] = useState(1);
+  const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
   // Simulate AI trading activity
   useEffect(() => {
@@ -147,6 +150,34 @@ const Index = () => {
     setZoomLevel(prev => Math.max(0.5, Math.min(2, prev + delta)));
   };
 
+  // Handle pan start
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button === 0) { // Left mouse button
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - panPosition.x, y: e.clientY - panPosition.y });
+    }
+  };
+
+  // Handle pan move
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      setPanPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      });
+    }
+  };
+
+  // Handle pan end
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // Handle mouse leave
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
   const filteredPredictions = selectedAgent
     ? mockPredictions.filter(p => {
         const agent = mockAgents.find(a => a.id === selectedAgent);
@@ -173,6 +204,11 @@ const Index = () => {
         <div 
           className="w-1/2 relative border-r border-border overflow-hidden"
           onWheel={handleWheel}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
+          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
         >
           {/* Subtle grid background */}
           <div 
@@ -190,7 +226,8 @@ const Index = () => {
           <div 
             className="relative h-full transition-transform duration-300 origin-center"
             style={{ 
-              transform: `scale(${zoomLevel})`,
+              transform: `scale(${zoomLevel}) translate(${panPosition.x / zoomLevel}px, ${panPosition.y / zoomLevel}px)`,
+              pointerEvents: isDragging ? 'none' : 'auto',
             }}
           >
             {filteredPredictions.map((prediction, index) => (
