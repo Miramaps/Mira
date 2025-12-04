@@ -1,5 +1,7 @@
 # MIRA - AI-Powered Prediction Market Terminal
 
+Real-time AI-powered prediction market interface with live trading analytics and neural network visualizations.
+
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -9,8 +11,6 @@
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 
 ![MIRA Banner](https://raw.githubusercontent.com/Miramaps/Mira/main/public/1500x500.jpg)
-
-Real-time AI-powered prediction market interface with live trading analytics and neural network visualizations.
 
 ## Features
 
